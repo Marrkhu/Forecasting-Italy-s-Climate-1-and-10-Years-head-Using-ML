@@ -1,59 +1,103 @@
-# Forecasting-Italy-s-Climate-1-and-10-Years-head-Using-ML
+# Forecasting Italy's Climate 1 and 10 Years Ahead Using ML
 
-Overview
-This project applies machine learning techniques to forecast average monthly temperatures in Italy using the Global Historical Climatology Network (GHCN) daily dataset. The models explored include Recurrent Neural Networks (RNNs) and Long Short-Term Memory networks (LSTMs), with performance benchmarks against a naive baseline.
+## **Overview**
+This project applies machine learning techniques to forecast average monthly temperatures in Italy using the Global Historical Climatology Network (GHCN) daily dataset. The models explored include:
 
-Objectives
-Forecast average monthly temperatures in Italy over 1-year and 10-year horizons.
+- Recurrent Neural Networks (RNNs)
+- Long Short-Term Memory networks (LSTMs)
 
-Evaluate model performance using Mean Squared Error (MSE).
+Performance is benchmarked against a naive baseline to assess effectiveness.
 
-Assess the impact of using single versus multiple weather stations.
+---
 
-Conduct station removal experiments to analyse data sensitivity.
+## **Objectives**
 
-Dataset
-Source: GHCN-Daily (NOAA)
+- Forecast average monthly temperatures in Italy over 1-year and 10-year horizons  
+- Evaluate model performance using Mean Squared Error (MSE)  
+- Assess the impact of using single vs. multiple weather stations  
+- Conduct station removal experiments to analyse data sensitivity  
 
-Scope: Temperature data (TMAX, TMIN) from five Italian weather stations
+---
 
-Preprocessing:
+## **Dataset**
 
-Parsed .dly files
+- **Source:** GHCN-Daily (NOAA)  
+- **Scope:** Temperature data (TMAX, TMIN) from five Italian weather stations  
 
-Rescaled temperature values
+**Preprocessing Steps:**
+- Parsed `.dly` files  
+- Rescaled temperature values (tenths of degrees)  
+- Aggregated daily data into monthly averages  
+- Handled missing values and ensured temporal consistency  
 
-Aggregated daily readings to monthly averages
+---
 
-Handled missing data and ensured temporal alignment across stations
+## **Methodology**
 
-Methodology
-Models: RNN and LSTM
+- **Models Used:** RNN, LSTM  
+- **Baseline:** Naive prediction (e.g. next temperature = current temperature)  
+- **Forecast Horizons:**  
+  - Short-term: 12 months (1 year)  
+  - Long-term: 120 months (10 years)  
+- **Input Format:** Sliding window of 12 months as input to predict the future horizon  
+- **Evaluation Strategy:**  
+  - 80/20 train/test split  
+  - Early stopping  
+  - Mean Squared Error (MSE) metrics  
 
-Baseline: Naive forecast (next temperature = current temperature)
+---
 
-Forecast Horizons: 12 months (1 year), 120 months (10 years)
+## **Key Results**
 
-Input Format: Sliding window of 12 months history to predict the future horizon
+### **1-Year Forecast (12 Months)**
 
-Evaluation: Training/validation split (80/20), early stopping, MSE metrics
+- **Single Station:**
+  - RNN and LSTM underperformed due to data sparsity  
+  - Naive baseline outperformed both models  
 
-Station Sensitivity Analysis
-Removing stations with the most missing data improved model accuracy significantly.
+- **Multiple Stations:**
+  - Combining all five stations improved performance  
+  - Both RNN and LSTM outperformed the naive baseline  
+    - **LSTM MSE:** 4.99  
+    - **RNN MSE:** 4.89  
+    - **Baseline MSE:** 5.13  
 
-Optimal performance achieved by removing stations IT000016134 and IT000162580.
+### **10-Year Forecast (120 Months)**
 
-Excessive station removal degraded model performance due to reduced training data size and inter-station variability.
+- **Model:** LSTM only (RNN failed due to gradient issues)  
+- **Outcome:** Initial months predicted accurately  
+- **Problem:** Long-term performance degraded due to overfitting and data limitations  
 
-Limitations & Future Work
-Data Quality: Missing entries across stations significantly hinder model learning.
+---
 
-Feature Scope: Inclusion of additional climate variables (precipitation, snow) is proposed.
+## **Station Sensitivity Analysis**
 
-Model Tuning: Further hyperparameter tuning and use of extrapolation techniques to fill data gaps could enhance results.
+- Removing stations with the highest data gaps improved model accuracy  
+- Best performance achieved by removing:
+  - `IT000016134`
+  - `IT000162580`  
+- Excessive station removal reduced model performance due to limited training data and loss of pattern redundancy  
 
-Geospatial Features: Incorporating station elevation and coordinates into the model may improve accuracy.
+---
 
-Author
-Giorgi Markhulia — BSc Natural Sciences, UCL
-Project completed in March 2025.
+## **Limitations & Future Work**
+
+- **Data Quality:**  
+  - Sparse datasets and missing values negatively impact model learning  
+
+- **Feature Scope:**  
+  - Introducing additional variables (e.g. precipitation, snow depth) may enhance predictions  
+
+- **Model Tuning:**  
+  - Further hyperparameter tuning and sequence extrapolation methods recommended  
+
+- **Geospatial Features:**  
+  - Integrating elevation and coordinates may improve temporal coherence between stations
+ 
+  ---
+
+## **Author**
+
+**Giorgi Markhulia**  
+BSc Natural Sciences, UCL  
+_March 2025_
